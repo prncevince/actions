@@ -13,9 +13,9 @@ runs:
         run: |
           echo "RENV_PATHS_ROOT=${{ runner.temp }}/renv" >> $GITHUB_ENV
       - name: Install and activate renv
+        shell: Rscript {0}
         run: |
           paste('activated via ./renv & ./.Rprofile')
-        shell: Rscript {0}
       - name: Get R and OS version
         id: get-version
         run: |

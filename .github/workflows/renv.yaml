@@ -38,3 +38,7 @@ jobs:
           # use RStudio's CRAN mirror with precompiled binaries
           use-public-rspm: true
       - uses: prncevince/actions/setup-renv@main
+      - name: Restore packages from lock file
+        shell: Rscript {0}
+        run: |
+          renv::restore()
