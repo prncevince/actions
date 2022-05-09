@@ -23,6 +23,10 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         r: ['release']
+    # Restrict concurrency for non-PR jobs
+    # PR jobs run in their own branch & do not deploy anything - so we assume they can run concurrently
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.event_name != 'pull_request' || github.run_id }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
@@ -39,6 +43,7 @@ jobs:
           use-public-rspm: true
       - uses: prncevince/actions/setup-renv@main
       - name: Restore packages from lock file
-        shell: Rscript {0}
+        shell: bash
         run: |
-          renv::restore()
+          cp setup-renv/renv.lock .
+          Rscript -e 'renv::restore()'

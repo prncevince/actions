@@ -11,14 +11,22 @@ GH_DIR = .github
 GHA_WORKFLOWS_DIR = $(addprefix $(GH_DIR)/,workflows)
 GHA_WORKFLOWS = $(addprefix $(GHA_WORKFLOWS_DIR)/,$(GHA_WORKFLOWS_FILES))
 
-RMD_GHPAGES_DIR = docs
+# RMD html_document output
+GHPAGES_DIR = docs
+RMD_FILES = .nojekyll
+RMD_GHPAGES_DIR = $(addprefix $(GHPAGES_DIR)/,rmd)
+RMD_DIRS = libs
+
+RMD_GHPAGES_FILES = $(addprefix $(GHPAGES_DIR)/,$(RMD_FILES))
+RMD_GHPAGES_DIRS = $(addprefix $(RMD_GHPAGES_DIR)/,$(RMD_DIRS))
+
 
 all: setup_gha setup_rmd
 
 setup_gha: | $(GHA_WORKFLOWS) $(GHAS)
 	echo 'setup GHA'
 
-setup_rmd: | $(RMD_GHPAGES_DIR)/libs $(RMD_GHPAGES_DIR)/.nojekyll
+setup_rmd: | $(RMD_GHPAGES_FILES)
 	echo 'setup RMD'
 
 $(GHAS): | $(GHA_DIRS)
@@ -33,14 +41,14 @@ $(GHA_WORKFLOWS): | $(GHA_WORKFLOWS_DIR)
 $(GHA_WORKFLOWS_DIR):
 	mkdir -p $@
 
-$(RMD_GHPAGES_DIR)/libs:
-	mkdir -p $@
-	
-$(RMD_GHPAGES_DIR)/.nojekyll:
+$(RMD_GHPAGES_FILES): | $(RMD_GHPAGES_DIRS)
 	touch $@
 
+$(RMD_GHPAGES_DIRS):
+	mkdir -p $@
+
 build_rmd:
-	Rscript build/build.R
+	Rscript build/build_rmd.R
 	
 preview_rmd:
 	Rscript utils/preview.R
