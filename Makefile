@@ -1,6 +1,6 @@
 # add new action directories to `GHA_DIRS` & new template files to `GHA_WORKFLOWS_FILES` as necessary
 # templates test out the actions & are great files to add to your repo
-.PHONY: all setup_gha setup_rmd setup_site build_index build_pkgdown build_rmd preview
+.PHONY: all setup_gha setup_site setup_pkgdown setup_rmd build_index build_pkgdown build_rmd preview
 
 GHA_DIRS = setup-renv setup-pkgdown setup-index
 GHA_WORKFLOWS_FILES = renv.yaml pkgdown.yaml index.yaml
@@ -22,7 +22,8 @@ SITE_FILES = index.html
 SITE_FILE_PATHS = $(addprefix $(SITE_DIR)/,$(SITE_FILES))
 
 # pkgdown output
-PKGDOWN_FILES = DESCRIPTION
+# PKGDOWN_FILES = DESCRIPTION NAMESPACE .Rbuildignore _pkgdown.yml
+# PKGDOWN_DIRS = R
 PKGDOWN_GHPAGES_DIR = $(addprefix $(GHPAGES_DIR)/,pkgdown)
 
 # RMD html_document output
@@ -71,6 +72,8 @@ $(GHPAGES_DIR):
 
 $(GHPAGES_FILE_PATHS) $(PKGDOWN_FILES): | $(PKGDOWN_GHPAGES_DIR) $(RMD_GHPAGES_DIRS)
 	touch $@
+# usethis::create_package(path = '.')
+# usethis::use_pkgdown(destdir = "docs/pkgdown/")
 
 $(PKGDOWN_GHPAGES_DIR):
 	mkdir -p $@

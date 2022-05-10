@@ -23,7 +23,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         r: ['release']
-    # Restrict concurrency for non-PR jobs
+    # Only runs PR jobs concurrently
     # PR jobs run in their own branch & do not deploy anything - so we assume they can run concurrently
     concurrency:
       group: ${{ github.workflow }}-${{ github.event_name != 'pull_request' || github.run_id }}
