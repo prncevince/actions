@@ -42,7 +42,7 @@ jobs:
         run: pkgdown::build_site_github_pages(dest_dir = "docs/pkgdown", install = T)
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
-        uses: JamesIves/github-pages-deploy-action@4.3.3
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
           branch: gh-pages
           folder: docs/setup-pkgdown
