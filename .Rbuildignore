@@ -1,0 +1,23 @@
+^actions\.Rproj$
+^\.Rproj\.user$
+^renv$
+^renv\.lock$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^LICENSE\.md$
+# data dir not ready to be used yet
+^data$
+^notes$
+^node_modules$
+^.*\.swp$
+^\.DS_Store$
+^\.Rversion$
+^\.github$
+^Makefile$
+^dependencies.R$
+^setup-index$
+^setup-pkgdown$
+^setup-renv$
+^static$
+^utils$

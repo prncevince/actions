@@ -22,4 +22,4 @@ CONTRIBUTING.html
 # OS
 .DS_Store
 # github pages
-docs
+/docs

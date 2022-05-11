@@ -1,0 +1,29 @@
+name: build-index
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ghpages-${{ github.event_name != 'pull_request' || github.run_id }}
+      cancel-in-progress: true
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+    - name: Build site
+      shell: bash
+      run: echo pre-built site  
+    - name: Deploy to GitHub pages 🚀
+      if: github.event_name != 'pull_request'
+      uses: JamesIves/github-pages-deploy-action@v4.3.3
+      with:
+        branch: gh-pages
+        folder: static
+        target-folder: .
+        clean: false

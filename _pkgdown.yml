@@ -1,0 +1,5 @@
+url: https://prncevince.github.io/actions/pkgdown/
+template:
+  bootstrap: 5
+destination: docs/pkgdown/
+
