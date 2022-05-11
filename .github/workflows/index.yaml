@@ -20,10 +20,10 @@ jobs:
       shell: bash
       run: echo pre-built site  
     - name: Deploy to GitHub pages 🚀
-    if: github.event_name != 'pull_request'
-    uses: JamesIves/github-pages-deploy-action@4.3.3
-    with:
-      branch: gh-pages
-      folder: static
-      target-folder: .
-      clean: false
+      if: github.event_name != 'pull_request'
+      uses: JamesIves/github-pages-deploy-action@4.3.3
+      with:
+        branch: gh-pages
+        folder: static
+        target-folder: .
+        clean: false
