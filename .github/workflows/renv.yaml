@@ -23,10 +23,10 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         r: ['release']
-    # Only runs PR jobs concurrently
-    # PR jobs run in their own branch & do not deploy anything - so we assume they can run concurrently
+    # Runs all jobs concurrently - also will cancel in progress jobs on new trigger events
     concurrency:
-      group: ${{ github.workflow }}-${{ github.event_name != 'pull_request' || github.run_id }}
+      group: ${{ github.workflow }}-${{ github.job }}-${{ github.run_id }}
+      cancel-in-progress: true
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes

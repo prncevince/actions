@@ -14,3 +14,10 @@
 ^\.DS_Store$
 ^\.Rversion$
 ^\.github$
+^Makefile$
+^dependencies.R$
+^setup-index$
+^setup-pkgdown$
+^setup-renv$
+^static$
+^utils$

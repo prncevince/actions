@@ -1,6 +1,6 @@
 # add new action directories to `GHA_DIRS` & new template files to `GHA_WORKFLOWS_FILES` as necessary
 # templates test out the actions & are great files to add to your repo
-.PHONY: all setup_gha setup_site setup_pkgdown setup_rmd build_index build_pkgdown build_rmd preview
+.PHONY: all setup_gha setup_site setup_pkgdown setup_rmd build_index build_pkgdown build_rmd build_r_pkg r_pkg_check preview
 
 GHA_DIRS = setup-renv setup-pkgdown setup-index
 GHA_WORKFLOWS_FILES = renv.yaml pkgdown.yaml index.yaml
@@ -90,6 +90,13 @@ build_pkgdown:
 
 build_rmd:
 	Rscript utils/build_rmd.R
+	
+build_r_pkg:
+	devtools::document(roclets = c('rd', 'collate', 'namespace'))
+	devtools::build()
+	
+r_pkg_check:
+	devtools::check()
 	
 preview:
 	Rscript utils/preview.R

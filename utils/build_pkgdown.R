@@ -1,1 +1,1 @@
-pkgdown::build_site_github_pages(dest_dir = "docs/pkgdown")
+pkgdown::build_site_github_pages(dest_dir = "docs/pkgdown", install = T)
