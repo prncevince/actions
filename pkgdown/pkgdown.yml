@@ -2,7 +2,7 @@ pandoc: 2.14.2
 pkgdown: 2.0.3
 pkgdown_sha: ~
 articles: {}
-last_built: 2022-05-12T02:31Z
+last_built: 2022-05-12T05:10Z
 urls:
   reference: https://prncevince.github.io/actions/pkgdown/reference
   article: https://prncevince.github.io/actions/pkgdown/articles
