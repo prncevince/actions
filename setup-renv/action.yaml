@@ -10,16 +10,16 @@ inputs:
     required: true
     default: 'renv.lock'
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
       - name: Set RENV_PATHS_ROOT
         shell: bash
         run: |
-          echo "RENV_PATHS_ROOT=${{ runner.temp }}/renv" >> $GITHUB_ENV
+          echo 'RENV_PATHS_ROOT=${{ runner.temp }}/renv' >> $GITHUB_ENV
       - name: Install and activate renv
         shell: Rscript {0}
         run: |
-          paste('activated via ./renv & ./.Rprofile')
+          paste("activated via ./renv & ./.Rprofile")
       - name: Get R and OS version
         id: get-version
         shell: Rscript {0}
@@ -34,4 +34,4 @@ runs:
           restore-keys: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-
       - name: Restore packages from renv.lock file
         shell: Rscript {0}
-        run: renv::restore(${{ inputs.lock-file }})
+        run: renv::restore("${{ inputs.lock-file }}")
