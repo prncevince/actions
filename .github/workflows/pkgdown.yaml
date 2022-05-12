@@ -40,7 +40,7 @@ jobs:
           sudo apt-get install -y libcurl4-openssl-dev libharfbuzz-dev libfribidi-dev
       - uses: ./setup-renv
         with:
-          lock-file: 'setup-pkgdown/renv.lock'
+          lockfile: 'setup-pkgdown/renv.lock'
       - name: Build site
         shell: Rscript {0}
         run: pkgdown::build_site_github_pages(dest_dir = "docs/pkgdown", install = T)

@@ -5,7 +5,7 @@ inputs:
     description: 'The version of the cache. Change this to bust cache & trigger storing a new cache.'
     required: true
     default: 1
-  lock-file: 
+  lockfile: 
     description: 'Relative path to the renv.lock file.'
     required: true
     default: 'renv.lock'
@@ -30,8 +30,8 @@ runs:
         uses: actions/cache@v3
         with:
           path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-${{ hashFiles(inputs.lock-file) }}
+          key: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-${{ hashFiles(inputs.lockfile) }}
           restore-keys: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-
       - name: Restore packages from renv.lock file
         shell: Rscript {0}
-        run: renv::restore("${{ inputs.lock-file }}")
+        run: renv::restore(lockfile = "${{ inputs.lockfile }}")

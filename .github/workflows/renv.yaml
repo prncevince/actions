@@ -45,4 +45,4 @@ jobs:
           use-public-rspm: true
       - uses: ./setup-renv
         with:
-          lock-file: 'setup-renv/renv.lock'
+          lockfile: 'setup-renv/renv.lock'
