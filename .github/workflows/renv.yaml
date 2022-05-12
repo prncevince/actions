@@ -43,6 +43,6 @@ jobs:
           http-user-agent: ${{ matrix.http-user-agent }}
           # use RStudio's CRAN mirror with precompiled binaries
           use-public-rspm: true
-      - uses: prncevince/actions/setup-renv@main
+      - uses: ./prncevince/actions/setup-renv
         with:
           lock-file: 'setup-renv/renv.lock'
