@@ -5,8 +5,7 @@ Authors@R:
     person("Vincent", "Clemson", , "vincent.clemson@gmail.com", role = c("aut", "cre"))
 Description: A test package to test using Github Actions.
 License: MIT + file LICENSE
-URL: https://prncevince.github.io/actions/pkgdown/,
-    https://github.com/prncevince/actions/,
+URL: https://prncevince.github.io/actions/pkgdown/, https://github.com/prncevince/actions/
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
