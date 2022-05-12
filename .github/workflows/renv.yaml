@@ -43,9 +43,6 @@ jobs:
           http-user-agent: ${{ matrix.http-user-agent }}
           # use RStudio's CRAN mirror with precompiled binaries
           use-public-rspm: true
-      - uses: prncevince/actions/setup-renv@main
-      - name: Restore packages from lock file
-        shell: bash
-        run: |
-          cp setup-renv/renv.lock .
-          Rscript -e 'renv::restore()'
+      - uses: ./setup-renv
+        with:
+          lockfile: 'setup-renv/renv.lock'
