@@ -33,13 +33,14 @@ jobs:
         with:
           r-version: ${{ matrix.r }}
           use-public-rspm: true
-      - name: Install libcurl on Linux
+      - name: Install system dependencies on Linux
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update -y
           sudo apt-get install -y libcurl4-openssl-dev libharfbuzz-dev libfribidi-dev
       - uses: ./setup-renv
         with:
+          type: 'restore'
           lockfile: 'setup-pkgdown/renv.lock'
       - name: Build site
         shell: Rscript {0}

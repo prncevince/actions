@@ -1,11 +1,4 @@
-# Workflow derived from:
-# https://github.com/r-lib/actions/blob/v2-branch/examples/pkgdown.yaml
-# https://github.com/r-lib/actions/tree/v2/setup-renv
-# https://github.com/actions/cache/blob/main/examples.md#r---renv
-# https://github.com/jdjohn215/milwaukee-weather/tree/main/.github/workflows
-# https://github.com/r-lib/actions/blob/v2-branch/examples/check-standard.yaml
-
-name: renv-template
+name: renv-r-pkg-template
 on:
   push:
     branches: [main]
@@ -45,4 +38,5 @@ jobs:
           use-public-rspm: true
       - uses: ./setup-renv
         with:
-          lockfile: 'setup-renv/renv.lock'
+          type: 'r-pkg'
+      - uses: r-lib/actions/check-r-package@v2
