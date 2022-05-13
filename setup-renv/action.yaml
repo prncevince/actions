@@ -36,7 +36,7 @@ runs:
         shell: bash
         run: |
           if [[ ${{ inputs.type }} == 'r-pkg' ]]; then LOCKFILE=renv.lock; else LOCKFILE=${{ inputs.lockfile }}; fi
-          echo 'LOCKFILE="$LOCKFILE"' >> $GITHUB_ENV
+          echo 'LOCKFILE=${LOCKFILE}' >> $GITHUB_ENV
       - name: Get R and OS version
         id: get-version
         shell: Rscript {0}
@@ -47,8 +47,8 @@ runs:
         uses: actions/cache@v3
         with:
           path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-${{ hashFiles(env.LOCKFILE) }}
-          restore-keys: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-
+          key: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ github.workflow }}-${{ inputs.cache-version }}-${{ hashFiles(env.LOCKFILE) }}
+          restore-keys: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ github.workflow }}-${{ inputs.cache-version }}-
       - name: Restore packages from renv.lock file
         if: inputs.type == 'restore'
         shell: Rscript {0}
