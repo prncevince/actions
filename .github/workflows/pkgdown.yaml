@@ -22,7 +22,6 @@ jobs:
     # PR jobs run in their own branch & do not deploy anything - so we assume they can run concurrently
     concurrency:
       group: ghpages-${{ github.event_name != 'pull_request' || github.run_id }}
-      cancel-in-progress: true
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       RENV_CONFIG_REPOS_OVERRIDE: ${{ matrix.r-repo }}
