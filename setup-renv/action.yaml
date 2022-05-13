@@ -36,7 +36,7 @@ runs:
         shell: bash
         run: |
           if [[ ${{ inputs.type }} == 'r-pkg' ]]; then LOCKFILE=renv.lock; else LOCKFILE=${{ inputs.lockfile }}; fi
-          echo $LOCKFILE >> $GITHUB_ENV
+          echo 'LOCKFILE="$LOCKFILE"' >> $GITHUB_ENV
       - name: Get R and OS version
         id: get-version
         shell: Rscript {0}
