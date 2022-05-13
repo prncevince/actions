@@ -2,8 +2,8 @@
 # templates test out the actions & are great files to add to your repo
 .PHONY: all setup_gha setup_site setup_pkgdown setup_rmd build_index build_pkgdown build_rmd build_r_pkg r_pkg_check preview
 
-GHA_DIRS = setup-renv setup-pkgdown setup-index
-GHA_WORKFLOWS_FILES = renv.yaml pkgdown.yaml index.yaml
+GHA_DIRS = setup-renv setup-pkgdown setup-index check-r-package
+GHA_WORKFLOWS_FILES = renv.yaml pkgdown.yaml index.yaml check-release.yaml
 # GitHub Actions
 GHAS = $(addsuffix /action.yaml,$(GHA_DIRS))
 # Template Workflows

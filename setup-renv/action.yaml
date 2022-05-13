@@ -1,25 +1,40 @@
 name: 'setup-renv'
-description: 'Action to restore & cache R packages from renv.lock'
+description: 'Action to use {renv} for package installation & actions/cache GHA to cache all installed packages.'
 inputs:
+  type:
+    description: > 
+      The type of {renv} package install & setup. Choose 1 of: ['r-pkg', 'restore']
+      r-pkg: installs packages based on DESCRIPTION file for `R CMD check` to be
+        ran on your R package via {rcmdcheck} & r-lib/actions/check-r-package GHA 
+      restore: restores package cache from specified renv.lock file set in `inputs.lockfile`
+    required: true
   cache-version:
     description: 'The version of the cache. Change this to bust cache & trigger storing a new cache.'
     required: true
     default: 1
   lockfile: 
-    description: 'Relative path to the renv.lock file.'
+    description: "Relative path to the renv.lock file. Only necessary for when `inputs.type` is set to 'restore'"
     required: true
     default: 'renv.lock'
 runs:
   using: 'composite'
   steps:
       - name: Set RENV_PATHS_ROOT
-        shell: bash
-        run: |
-          echo 'RENV_PATHS_ROOT=${{ runner.temp }}/renv' >> $GITHUB_ENV
+        run: echo 'RENV_PATHS_ROOT=${{ runner.temp }}/renv' >> $GITHUB_ENV
       - name: Install and activate renv
         shell: Rscript {0}
+        run: paste("activated via ./renv & ./.Rprofile")
+      - name: Install packages from DESCRIPTION & write new lockfile 
+        if: inputs.type == 'r-pkg'
+        shell: Rscript {0}
         run: |
-          paste("activated via ./renv & ./.Rprofile")
+          renv::install()
+          renv::install('rcmdcheck')
+          renv::snapshot()
+      - name: Set LOCKFILE
+        run: |
+          if [[ ${{ inputs.type }} == 'r-pkg' ]]; then LOCKFILE=renv.lock; else LOCKFILE=${{ inputs.lockfile }}; fi
+          echo $LOCKFILE >> $GITHUB_ENV
       - name: Get R and OS version
         id: get-version
         shell: Rscript {0}
@@ -30,8 +45,9 @@ runs:
         uses: actions/cache@v3
         with:
           path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-${{ hashFiles(inputs.lockfile) }}
+          key: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-${{ hashFiles(env.LOCKFILE) }}
           restore-keys: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-
       - name: Restore packages from renv.lock file
+        if: inputs.type == 'restore'
         shell: Rscript {0}
         run: renv::restore(lockfile = "${{ inputs.lockfile }}")
