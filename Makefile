@@ -92,11 +92,10 @@ build_rmd:
 	Rscript utils/build_rmd.R
 	
 build_r_pkg:
-	devtools::document(roclets = c('rd', 'collate', 'namespace'))
-	devtools::build()
+	Rscript utils/build_r_pkg.R
 	
 r_pkg_check:
-	devtools::check()
+	Rscript utils/r_pkg_check.R
 	
 preview:
 	Rscript utils/preview.R
