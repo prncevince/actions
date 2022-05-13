@@ -1,4 +1,4 @@
-name: renv-restore-template
+name: renv-r-pkg-template
 on:
   push:
     branches: [main]

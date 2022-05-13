@@ -20,6 +20,7 @@ runs:
   using: 'composite'
   steps:
       - name: Set RENV_PATHS_ROOT
+        shell: bash
         run: echo 'RENV_PATHS_ROOT=${{ runner.temp }}/renv' >> $GITHUB_ENV
       - name: Install and activate renv
         shell: Rscript {0}
@@ -32,6 +33,7 @@ runs:
           renv::install('rcmdcheck')
           renv::snapshot()
       - name: Set LOCKFILE
+        shell: bash
         run: |
           if [[ ${{ inputs.type }} == 'r-pkg' ]]; then LOCKFILE=renv.lock; else LOCKFILE=${{ inputs.lockfile }}; fi
           echo $LOCKFILE >> $GITHUB_ENV
