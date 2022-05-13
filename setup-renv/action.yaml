@@ -30,7 +30,8 @@ runs:
         shell: Rscript {0}
         run: |
           renv::install()
-          renv::install('rcmdcheck')
+          if (!'rcmdcheck' %in% installed.packages()[,1]) renv::install('rcmdcheck')
+          if (file.exists('renv.lock')) file.remove('renv.lock')
           renv::snapshot()
       - name: Set LOCKFILE
         shell: bash
