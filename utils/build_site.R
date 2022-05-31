@@ -5,5 +5,5 @@ path <- commandArgs(trailingOnly = T)[2]
 
 createIndex(
   file = file, path = path,
-  title='Pages of GitHub Actions'
+  title = 'Pages of GitHub Actions'
 )

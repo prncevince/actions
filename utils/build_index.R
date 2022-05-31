@@ -1,3 +1,3 @@
 source('utils/index.R')
 
-createIndex('static/index.html', title='Pages of GitHub Actions')
+createIndex(file = 'static/index.html', title = 'Pages of GitHub Actions')
