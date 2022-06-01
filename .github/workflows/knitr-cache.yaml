@@ -36,6 +36,9 @@ jobs:
         with:
           type: 'restore'
           lockfile: 'setup-knitr-cache/renv.lock'
+      - uses: ./setup-knitr-cache
+        with:
+          cache: 'setup-knitr-cache/knitr-cache_cache'
       - name: Build site
         shell: Rscript {0}
         run: rmarkdown::render(output_dir = "docs/rmd/", output_file = "index.html", input = "setup-knitr-cache/knitr-cache.Rmd", output_format = "html_document")
