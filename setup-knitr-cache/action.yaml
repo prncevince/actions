@@ -11,9 +11,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Set knitr cache directory
-      shell: bash
-      run: echo 'KNITR_CACHE_DIR=${{ inputs.cache }}' >> $GITHUB_ENV
     - name: Get R and OS version
       id: get-version
       shell: Rscript {0}
@@ -23,6 +20,6 @@ runs:
     - name: Restore knitr cache
       uses: actions/cache@v3
       with:
-        path: ${{ env.RENV_PATHS_ROOT }}
-        key: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ github.workflow }}-${{ github.action }}-${{ inputs.cache-version }}-${{ hashFiles(format('{0}/**', env.KNITR_CACHE_DIR)) }}
+        path: ${{ inputs.cache }}
+        key: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ github.workflow }}-${{ github.action }}-${{ inputs.cache-version }}-${{ hashFiles(format('{0}/**', inputs.cache)) }}
         restore-keys: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ github.workflow }}-${{ github.action }}-${{ inputs.cache-version }}-
