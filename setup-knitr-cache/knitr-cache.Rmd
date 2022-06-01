@@ -40,7 +40,7 @@ three
 
 Long Vector `cach.lazy=FALSE` test
 
-```{r 3, cache=TRUE, dependson='2', cache.lazy=TRUE}
+```{r 3, cache=TRUE, dependson='2', cache.lazy=FALSE}
 d <- matrix(1, three+(2^30)/three, three)
 
 rbind(head(d), tail(d))
