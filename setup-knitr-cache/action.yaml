@@ -1,0 +1,28 @@
+name: 'setup-knitr-cache'
+description: 'Action to cache your {knitr} cache using actions/cache GHA.'
+inputs:
+  cache: 
+    description: "Relative path to the knitr cache directory."
+    required: true
+  cache-version:
+    description: 'The version of the cache. Change this to bust cache & trigger storing a new cache.'
+    required: true
+    default: 1
+runs:
+  using: 'composite'
+  steps:
+    - name: Set knitr cache directory
+      shell: bash
+      run: echo 'KNITR_CACHE_DIR=${{ inputs.cache }}' >> $GITHUB_ENV
+    - name: Get R and OS version
+      id: get-version
+      shell: Rscript {0}
+      run: |
+        cat("##[set-output name=os-version;]", sessionInfo()$running, "\n", sep = "")
+        cat("##[set-output name=r-version;]", R.Version()$version.string, sep = "")
+    - name: Restore knitr cache
+      uses: actions/cache@v3
+      with:
+        path: ${{ env.RENV_PATHS_ROOT }}
+        key: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ github.workflow }}-${{ inputs.cache-version }}-${{ hashFiles(env.KNITR_CACHE_DIR/**) }}
+        restore-keys: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ github.workflow }}-${{ inputs.cache-version }}-

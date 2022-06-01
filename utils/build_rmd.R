@@ -1,4 +1,6 @@
 rmarkdown::render(
-  input = "setup-rmd-cache/rmd-cache.Rmd", output_format = "html_document",
-  output_file = "docs/rmd/index.html"
+  input = "setup-knitr-cache/knitr-cache.Rmd",
+  output_dir = "docs/rmd/",
+  output_file = "index.html",
+  output_format = "html_document"
 )

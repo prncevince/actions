@@ -7,7 +7,7 @@
 *.tar.*
 # R Markdown
 *.nb.html
-/*_cache
+*_cache/
 test.Rmd
 test.html
 # User RStudio & R Markdown to preview markdown files before on remote repo

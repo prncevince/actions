@@ -1,0 +1,52 @@
+---
+title: prncevince/actions-r/setup-knitr-cache GHA
+output:
+  html_document:
+    lib_dir: ../docs/rmd/libs
+    self_contained: FALSE
+---
+
+```{r setup, include=FALSE}
+knitr::knit_hooks$set(wrapper = function(before, options) {
+  # the original chunk might be indented
+  if (is.null(indent <- options$indent)) indent <- ''
+  
+  # hide the wrapper=TRUE option
+  opts <- gsub(', wrapper=TRUE', '', options$params.src)
+  
+  if (before) {
+    # add the header
+    sprintf('\n\n%s````\n```{r %s}\n````\n', indent, opts)
+  } else {
+    # add the footer
+    sprintf('\n\n%s````\n```\n````\n', indent)
+  }
+})
+
+knitr::opts_chunk$set(wrapper = TRUE)
+```
+
+```{r 1, cache=TRUE}
+two <- 1+1
+two
+```
+
+Depends on test
+
+```{r 2, cache=TRUE, dependson='1'}
+three <- two+1
+three
+```
+
+Long Vector `cach.lazy=FALSE` test
+
+```{r 3, cache=TRUE, dependson='2', cache.lazy=TRUE}
+d <- matrix(1, three+(2^30)/three, three)
+
+rbind(head(d), tail(d))
+```
+
+```{r 4, cache=TRUE, dependson='3'}
+d[[prod(dim(d))]]
+```
+
