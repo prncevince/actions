@@ -1,5 +1,5 @@
 ---
-title: prncevince/actions-r/setup-knitr-cache GHA
+title: prncevince/r-actions/setup-knitr-cache GHA
 output:
   html_document:
     lib_dir: ../docs/rmd/libs
