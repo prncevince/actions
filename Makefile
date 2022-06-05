@@ -63,6 +63,7 @@ $(GHA_WORKFLOWS_DIR):
 
 $(SITE_FILE_PATHS) &: | $(SITE_DIR) $(GHPAGES_SITE_DIRS)
 	Rscript utils/build_site.R $(SITE_DIR)/index.html $(GHPAGES_DIR)
+	touch $(SITE_DIR)/.nojekyll
 	cp -pr $(SITE_DIR)/. $(GHPAGES_DIR)
 
 $(SITE_DIR):
