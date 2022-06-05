@@ -2,8 +2,8 @@
 # templates test out the actions & are great files to add to your repo
 .PHONY: all setup_gha setup_site setup_pkgdown setup_rmd build_index build_site build_pkgdown build_rmd build_r_pkg r_pkg_check preview
 
-GHA_DIRS = setup-renv setup-pkgdown setup-index setup-rmd-cache
-GHA_WORKFLOWS_FILES = renv-r-pkg.yaml renv-restore.yaml pkgdown.yaml index.yaml rmd-cache.yaml
+GHA_DIRS = setup-renv setup-pkgdown setup-index setup-knitr-cache
+GHA_WORKFLOWS_FILES = renv-r-pkg.yaml renv-restore.yaml pkgdown.yaml index.yaml knitr-cache.yaml
 # GitHub Actions
 GHAS = $(addsuffix /action.yaml,$(GHA_DIRS))
 # Template Workflows
@@ -18,7 +18,7 @@ GHPAGES_FILE_PATHS = $(addprefix $(GHPAGES_DIR)/,$(GHPAGES_FILES))
 
 # Site Static Content
 SITE_DIR = static
-SITE_FILES = index.html
+SITE_FILES = index.html .nojekyll
 SITE_FILE_PATHS = $(addprefix $(SITE_DIR)/,$(SITE_FILES))
 
 # pkgdown output
@@ -27,7 +27,7 @@ PKGDOWN_DIRS = R
 PKGDOWN_GHPAGES_DIR = $(addprefix $(GHPAGES_DIR)/,pkgdown)
 
 # RMD html_document output
-RMD_FILES = setup-rmd-cache/rmd-cache.Rmd
+RMD_FILES = setup-knitr-cache/knitr-cache.Rmd
 RMD_DIRS = libs
 RMD_GHPAGES_DIR = $(addprefix $(GHPAGES_DIR)/,rmd)
 RMD_GHPAGES_DIRS = $(addprefix $(RMD_GHPAGES_DIR)/,$(RMD_DIRS))

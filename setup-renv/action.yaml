@@ -19,41 +19,41 @@ inputs:
 runs:
   using: 'composite'
   steps:
-      - name: Set RENV_PATHS_ROOT
-        shell: bash
-        run: echo 'RENV_PATHS_ROOT=${{ runner.temp }}/renv' >> $GITHUB_ENV
-      - name: Install and activate renv
-        shell: Rscript {0}
-        run: paste("activated via ./renv & ./.Rprofile")
-      - name: Set LOCKFILE
-        shell: bash
-        run: |
-          if [[ ${{ inputs.type }} == 'r-pkg' ]]; then
-            echo 'LOCKFILE=renv.lock' >> $GITHUB_ENV
-          else
-            echo 'LOCKFILE=${{ inputs.lockfile }}' >> $GITHUB_ENV
-          fi 
-      - name: Get R and OS version
-        id: get-version
-        shell: Rscript {0}
-        run: |
-          cat("##[set-output name=os-version;]", sessionInfo()$running, "\n", sep = "")
-          cat("##[set-output name=r-version;]", R.Version()$version.string, sep = "")
-      - name: Restore {renv} package cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ env.RENV_PATHS_ROOT }}
-          key: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ github.workflow }}-${{ inputs.cache-version }}-${{ hashFiles(env.LOCKFILE) }}
-          restore-keys: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ github.workflow }}-${{ inputs.cache-version }}-
-      - name: Install packages from DESCRIPTION & write new lockfile 
-        if: inputs.type == 'r-pkg'
-        shell: Rscript {0}
-        run: |
-          renv::install()
-          if (!'rcmdcheck' %in% installed.packages()[,1]) renv::install('rcmdcheck')
-          if (file.exists('renv.lock')) file.remove('renv.lock')
-          renv::snapshot()          
-      - name: Restore packages from renv.lock file
-        if: inputs.type == 'restore'
-        shell: Rscript {0}
-        run: renv::restore(lockfile = "${{ inputs.lockfile }}")
+    - name: Set RENV_PATHS_ROOT
+      shell: bash
+      run: echo 'RENV_PATHS_ROOT=${{ runner.temp }}/renv' >> $GITHUB_ENV
+    - name: Install and activate renv
+      shell: Rscript {0}
+      run: paste("activated via ./renv & ./.Rprofile")
+    - name: Set LOCKFILE
+      shell: bash
+      run: |
+        if [[ ${{ inputs.type }} == 'r-pkg' ]]; then
+          echo 'LOCKFILE=renv.lock' >> $GITHUB_ENV
+        else
+          echo 'LOCKFILE=${{ inputs.lockfile }}' >> $GITHUB_ENV
+        fi 
+    - name: Get R and OS version
+      id: get-version
+      shell: Rscript {0}
+      run: |
+        cat("##[set-output name=os-version;]", sessionInfo()$running, "\n", sep = "")
+        cat("##[set-output name=r-version;]", R.Version()$version.string, sep = "")
+    - name: Restore {renv} package cache
+      uses: actions/cache@v3
+      with:
+        path: ${{ env.RENV_PATHS_ROOT }}
+        key: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ github.workflow }}-${{ inputs.cache-version }}-${{ hashFiles(env.LOCKFILE) }}
+        restore-keys: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ github.workflow }}-${{ inputs.cache-version }}-
+    - name: Install packages from DESCRIPTION & write new lockfile 
+      if: inputs.type == 'r-pkg'
+      shell: Rscript {0}
+      run: |
+        renv::install()
+        if (!'rcmdcheck' %in% installed.packages()[,1]) renv::install('rcmdcheck')
+        if (file.exists('renv.lock')) file.remove('renv.lock')
+        renv::snapshot()          
+    - name: Restore packages from renv.lock file
+      if: inputs.type == 'restore'
+      shell: Rscript {0}
+      run: renv::restore(lockfile = "${{ inputs.lockfile }}")

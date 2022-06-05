@@ -1,0 +1,52 @@
+name: knitr-cache-template
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  rmarkdown:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-20.04]
+        r: ['release']
+        r-repo: ['https://packagemanager.rstudio.com/all/__linux__/focal/latest']
+    # Only runs PR jobs concurrently & uses same group as other ghpages jobs
+    # PR jobs run in their own branch & do not deploy anything - so we assume they can run concurrently
+    concurrency:
+      group: ghpages-${{ github.event_name != 'pull_request' || github.run_id }}
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      RENV_CONFIG_REPOS_OVERRIDE: ${{ matrix.r-repo }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: r-lib/actions/setup-pandoc@v2
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.r }}
+      - name: Install system dependencies on Linux
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libcurl4-openssl-dev libharfbuzz-dev libfribidi-dev
+      - uses: ./setup-renv
+        with:
+          type: 'restore'
+          lockfile: 'setup-knitr-cache/renv.lock'
+      - uses: ./setup-knitr-cache
+        with:
+          cache: 'setup-knitr-cache/knitr-cache_cache'
+          cache-hash: 'setup-knitr-cache/knitr-cache.Rmd'
+      - name: Build site
+        shell: Rscript {0}
+        run: rmarkdown::render(output_dir = "docs/rmd/", output_file = "index.html", input = "setup-knitr-cache/knitr-cache.Rmd", output_format = "html_document")
+      - name: Deploy to GitHub pages 🚀
+        if: github.event_name != 'pull_request'
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        with:
+          branch: gh-pages
+          folder: ./docs/rmd
+          target-folder: rmd
