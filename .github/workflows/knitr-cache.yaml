@@ -39,6 +39,7 @@ jobs:
       - uses: ./setup-knitr-cache
         with:
           cache: 'setup-knitr-cache/knitr-cache_cache'
+          cache-hash: 'setup-knitr-cache/knitr-cache.Rmd'
       - name: Build site
         shell: Rscript {0}
         run: rmarkdown::render(output_dir = "docs/rmd/", output_file = "index.html", input = "setup-knitr-cache/knitr-cache.Rmd", output_format = "html_document")
