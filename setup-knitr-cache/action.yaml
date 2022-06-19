@@ -24,5 +24,5 @@ runs:
       uses: actions/cache@v3
       with:
         path: ${{ inputs.cache }}
-        key: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ github.action }}-${{ github.workflow }}-${{ inputs.cache-version }}-${{ hashFiles(format('{0}', inputs.cache-hash)) }}
-        restore-keys: ${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ github.action }}-${{ github.workflow }}-${{ inputs.cache-version }}-
+        key: ${{ github.action }}-${{ github.workflow }}-${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-${{ hashFiles(format('{0}', inputs.cache-hash)) }}
+        restore-keys: ${{ github.action }}-${{ github.workflow }}-${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-
