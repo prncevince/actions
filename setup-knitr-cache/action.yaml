@@ -18,7 +18,7 @@ runs:
         cat("##[set-output name=os-version;]", sessionInfo()$running, "\n", sep = "")
         cat("##[set-output name=r-version;]", R.Version()$version.string, sep = "")
     - name: Restore knitr cache
-      uses: prncevince/actions-cache@1.0.0
+      uses: prncevince/actions-cache@v1.0.0
       with:
         reeval: true
         path: ${{ inputs.cache }}
