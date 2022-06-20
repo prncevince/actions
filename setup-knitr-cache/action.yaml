@@ -8,21 +8,19 @@ inputs:
     description: 'The version of the cache. Change this to bust cache & trigger storing a new cache.'
     required: true
     default: 1
-  cache-hash:
-    description: 'Path pattern provided to hashFiles expression. Used to determine unique cache key.'
-    required: true
 runs:
   using: 'composite'
   steps:
     - name: Get R and OS version
-      id: get-version
+      id: restore-partials
       shell: Rscript {0}
       run: |
         cat("##[set-output name=os-version;]", sessionInfo()$running, "\n", sep = "")
         cat("##[set-output name=r-version;]", R.Version()$version.string, sep = "")
     - name: Restore knitr cache
-      uses: actions/cache@v3
+      uses: prncevince/actions-cache@v1.0.0
       with:
+        reeval: true
         path: ${{ inputs.cache }}
-        key: ${{ github.action }}-${{ github.workflow }}-${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-${{ hashFiles(format('{0}', inputs.cache-hash)) }}
-        restore-keys: ${{ github.action }}-${{ github.workflow }}-${{ steps.get-version.outputs.os-version }}-${{ steps.get-version.outputs.r-version }}-${{ inputs.cache-version }}-
+        key: ${{ github.action }}-${{ github.workflow }}-${{ steps.restore-partials.outputs.os-version }}-${{ steps.restore-partials.outputs.r-version }}-${{ inputs.cache-version }}-${{ hashFiles(format('{0}/**', inputs.cache)) }}
+        restore-keys: ${{ github.action }}-${{ github.workflow }}-${{ steps.restore-partials.outputs.os-version }}-${{ steps.restore-partials.outputs.r-version }}-${{ inputs.cache-version }}-

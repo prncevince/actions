@@ -39,7 +39,6 @@ jobs:
       - uses: ./setup-knitr-cache
         with:
           cache: 'setup-knitr-cache/knitr-cache_cache'
-          cache-hash: 'setup-knitr-cache/knitr-cache.Rmd'
           cache-version: 0
       - name: Build site
         shell: Rscript {0}
