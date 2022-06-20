@@ -31,25 +31,25 @@ jobs:
           only-restore: true
           path: setup-knitr-cache/knitr-cache_cache
           key: '-'
-          restore-keys: __prncevince_r-actions_2-knitr-cache-template-${{ steps.restore-partials.outputs.os-version }}-${{ steps.restore-partials.outputs.r-version }}-
+          restore-keys: __self_2-knitr-cache-template-${{ steps.restore-partials.outputs.os-version }}-${{ steps.restore-partials.outputs.r-version }}-
       - name: Restore - renv-r-pkg-template
         uses: prncevince/actions-cache@v1.0.0
         with:
           only-restore: true
           path: ${{ runner.temp }}/renv
           key: '-'
-          restore-keys: __prncevince_r-actions-renv-r-pkg-template-${{ steps.restore-partials.outputs.os-version }}-${{ steps.restore-partials.outputs.r-version }}-
+          restore-keys: __self-renv-r-pkg-template-${{ steps.restore-partials.outputs.os-version }}-${{ steps.restore-partials.outputs.r-version }}-
       - name: Restore - renv-restore-template
         uses: prncevince/actions-cache@v1.0.0
         with:
           only-restore: true
           path: ${{ runner.temp }}/renv
           key: '-'
-          restore-keys: __prncevince_r-actions-renv-restore-template-${{ steps.restore-partials.outputs.os-version }}-${{ steps.restore-partials.outputs.r-version }}-
+          restore-keys: __self-renv-restore-template-${{ steps.restore-partials.outputs.os-version }}-${{ steps.restore-partials.outputs.r-version }}-
       - name: Restore - pkgdown-template
         uses: prncevince/actions-cache@v1.0.0
         with:
           only-restore: true
           path: ${{ runner.temp }}/renv
           key: '-'
-          restore-keys: __prncevince_r-actions-renv-r-pkg-template-${{ steps.restore-partials.outputs.os-version }}-${{ steps.restore-partials.outputs.r-version }}-
+          restore-keys: __self-renv-r-pkg-template-${{ steps.restore-partials.outputs.os-version }}-${{ steps.restore-partials.outputs.r-version }}-
