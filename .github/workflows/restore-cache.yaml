@@ -1,0 +1,55 @@
+name: restore-cache-template
+on:
+  schedule:
+    - cron: '0 4 * * 0,4'
+  push:
+    branches: [main]
+    paths-ignore: ['**.md']
+  pull_request:
+    branches: [main]
+    paths-ignore: ['**.md']
+  workflow_dispatch:
+jobs:
+  restore-cache:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-20.04]
+        r: ['release']
+        r-repo: ['https://packagemanager.rstudio.com/all/__linux__/focal/latest']
+    steps:
+      - name: Set restore key partials
+        id: restore-partials
+        run: |
+          Rscript -e 'cat("##[set-output name=os-version;]", sessionInfo()$running, "\n", sep = "")'
+          Rscript -e 'cat("##[set-output name=r-version;]", R.Version()$version.string, sep = "")'
+      - uses: actions/checkout@v3
+      - name: Restore - knitr-cache-template
+        uses: prncevince/actions-cache@v1.0.0
+        with:
+          only-restore: true
+          path: setup-knitr-cache/knitr-cache_cache
+          key: '-'
+          restore-keys: __prncevince_r-actions_2-knitr-cache-template-${{ steps.restore-partials.outputs.os-version }}-${{ steps.restore-partials.outputs.r-version }}-
+      - name: Restore - renv-r-pkg-template
+        uses: prncevince/actions-cache@v1.0.0
+        with:
+          only-restore: true
+          path: ${{ runner.temp }}/renv
+          key: '-'
+          restore-keys: __prncevince_r-actions-renv-r-pkg-template-${{ steps.restore-partials.outputs.os-version }}-${{ steps.restore-partials.outputs.r-version }}-
+      - name: Restore - renv-restore-template
+        uses: prncevince/actions-cache@v1.0.0
+        with:
+          only-restore: true
+          path: ${{ runner.temp }}/renv
+          key: '-'
+          restore-keys: __prncevince_r-actions-renv-restore-template-${{ steps.restore-partials.outputs.os-version }}-${{ steps.restore-partials.outputs.r-version }}-
+      - name: Restore - pkgdown-template
+        uses: prncevince/actions-cache@v1.0.0
+        with:
+          only-restore: true
+          path: ${{ runner.temp }}/renv
+          key: '-'
+          restore-keys: __prncevince_r-actions-renv-r-pkg-template-${{ steps.restore-partials.outputs.os-version }}-${{ steps.restore-partials.outputs.r-version }}-
